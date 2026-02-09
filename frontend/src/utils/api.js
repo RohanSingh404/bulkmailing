@@ -4,7 +4,7 @@ const API = axios.create({
   baseURL:
     window.location.hostname === "localhost"
       ? "http://localhost:3100/api"
-      : "https://bulkmailing-production.up.railway.app/api",
+      : "https://bulkmailing-production.up.railway.app",
   withCredentials: true,
 });
 
