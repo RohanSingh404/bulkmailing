@@ -34,7 +34,6 @@ const commonRoutes = require("./routes/common");
 app.use("/api/user", userRoutes);
 app.use("/api", commonRoutes);
 
-const path = require("path");
 
 const frontendPath = path.join(__dirname, "..", "frontend", "dist");
 app.use(express.static(frontendPath));
