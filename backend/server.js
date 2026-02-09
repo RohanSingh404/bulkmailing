@@ -17,13 +17,11 @@ app.use(express.json({ limit: "25mb" }));
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",  // for local development
-      "https://massswapsomailer-m3hql91c0-rohansinghiitian6395-4082s-projects.vercel.app" // your frontend URL
-    ],
+    origin: true,   // allow all origins (safe for APIs using auth tokens)
     credentials: true,
   })
 );
+
 
 
 
@@ -38,19 +36,6 @@ app.use("/api", commonRoutes);
 
 
 
-// ✅ ===== SERVE FRONTEND (React/Vite) =====
-
-// Path to frontend build folder
-const frontendPath = path.join(__dirname, "..", "frontend", "dist");
-
-// Serve static files
-app.use(express.static(frontendPath));
-
-// React router fallback (important)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-  
-});
 
 
 
