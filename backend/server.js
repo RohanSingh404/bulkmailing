@@ -34,10 +34,20 @@ const commonRoutes = require("./routes/common");
 app.use("/api/user", userRoutes);
 app.use("/api", commonRoutes);
 
+const path = require("path");
+
+const frontendPath = path.join(__dirname, "..", "frontend", "dist");
+app.use(express.static(frontendPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
 
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log("Server running on port", PORT));
 
 
 
 // Start Server
-module.exports = app;
+//module.exports = app;
