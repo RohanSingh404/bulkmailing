@@ -3,6 +3,11 @@ const { hashPassword } = require("../utils/hashPassword");
 
 const userSchema = mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+      unique: true, // ensures no duplicates
+    },
     firstName: {
       type: String,
       required: true,
