@@ -105,6 +105,7 @@ const register = async (req, res) => {
     lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
+    userId: new Date().getTime().toString(),
   });
   if (!user)
     return res
