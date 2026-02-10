@@ -66,7 +66,10 @@ const sendMails = async (req, res) => {
 
     console.log("FINAL HTML TO SEND:", finalHtml);
 
-    await sendMail(group.emails, req.body.subject, finalHtml, finalText);
+    for (const email of group.emails) {
+      await sendMail(email, req.body.subject, finalHtml, finalText);
+    }
+
 
     const sendBox = new Sent({
       userId: req.user._id,
