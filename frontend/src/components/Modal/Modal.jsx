@@ -18,21 +18,37 @@ const GroupModal = ({ handleModal }) => {
   const validEmail = [];
 
   const handleFileUpload = (event) => {
-    setFile(event.target.files[0]);
-    Papa.parse(event.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      complete: function (results) {
-        setTotalMails(results.data.length);
-        results.data.forEach((mail) => {
-          if (validator.isEmail(mail["Email Address"])) {
-            validEmail.push(mail["Email Address"]);
-          }
-        });
-      },
-    });
-    setvalidEmails(validEmail);
-  };
+  const file = event.target.files[0];
+  setFile(file);
+
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function (results) {
+      const contacts = [];
+
+      results.data.forEach((row) => {
+        const email =
+          row.email ||
+          row["Email Address"] ||
+          row["email address"] ||
+          row["Email"];
+
+        if (email && validator.isEmail(email)) {
+          contacts.push({
+            email: email,
+            name: row.name || row["Name"] || "",
+            company: row.company || row["Company"] || "",
+          });
+        }
+      });
+
+      setvalidEmails(contacts);
+      setTotalMails(results.data.length);
+    },
+  });
+};
+
 
   const handleSubmit = () => {
     const token = getToken();

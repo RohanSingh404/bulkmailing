@@ -5,6 +5,10 @@ const Template = require("../Models/Template");
 const bcrypt = require("bcrypt");
 const sendMail = require("../services/mail");
 const generateToken = require("../utils/generateToken");
+const fillTemplate = (template, data) => {
+  return template.replace(/{{(.*?)}}/g, (_, key) => data[key.trim()] || "");
+};
+
 
 const addGroup = async (req, res) => {
   const group = new Group({
@@ -66,9 +70,20 @@ const sendMails = async (req, res) => {
 
     console.log("FINAL HTML TO SEND:", finalHtml);
 
-    for (const email of group.emails) {
-      await sendMail(email, req.body.subject, finalHtml, finalText);
+    for (const contact of group.emails) {
+      const templateData = {
+        name: contact.name || "",
+        email: contact.email,
+        company: contact.company || "",
+        message: msg || ""
+      };
+
+      const personalizedHtml = fillTemplate(finalHtml, templateData);
+      const personalizedText = fillTemplate(finalText, templateData);
+
+      await sendMail(contact.email, req.body.subject, personalizedHtml, personalizedText);
     }
+
 
 
     const sendBox = new Sent({
